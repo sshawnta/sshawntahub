@@ -6,7 +6,7 @@
 /*   By: sshawnta <sshawnta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 15:11:21 by sshawnta          #+#    #+#             */
-/*   Updated: 2019/05/22 18:09:00 by sshawnta         ###   ########.fr       */
+/*   Updated: 2019/05/23 18:02:25 by sshawnta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ int main()
 	poi2 = &d;
 	//ft_printf("Bu %#-h15.2d eshe bukva %-4c cifra %s eshe cifra %d odin\n", d1, i, s, d1);
 	//ft_printf("%#-d %d ", d1, d);
-
+/*
 	
-	/*ft_printf("test0 %12.15d %+14.13d f\n", d1, d);
+	ft_printf("test0 %12.15d %+14.13d f\n", d1, d);
 	printf("test0 %12.15d %+14.13d p\n", d1, d);
 	ft_printf("test1 %+10.15d f\n", d1);
 	printf("test1 %+10.15d p\n", d1);
@@ -53,8 +53,9 @@ int main()
 	//ft_printf("%2c %15c\n", 'a', 'v');
 	//printf("%2c %15c\n", 'a', 'v');
 	
-	ft_printf("%2c\n", 0);
-	printf("%2c", 0);
+	ft_printf("%#8x\n", 42);
+	printf("%#8x", 42);
+	//ft_printf("%.0d",42);
 	//printf("%20.15d %+14.13d\n", d1, d);
 	//printf("Bukva %c eshe bukva %c cifra %d eshe cifra %d odin \n", i, s, d, d1, str1, str2, poi1, poi2);
 	//tt_printf("adres1 %p adres2 %% %p\n", poi1, poi2);

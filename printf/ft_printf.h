@@ -6,7 +6,7 @@
 /*   By: sshawnta <sshawnta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 15:17:27 by sshawnta          #+#    #+#             */
-/*   Updated: 2019/05/22 18:14:48 by sshawnta         ###   ########.fr       */
+/*   Updated: 2019/05/23 18:04:17 by sshawnta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_value
 	char cha;
 	char *str;
 	int i;
+	unsigned int u;
 	float f;
 } t_value;
 
@@ -80,15 +81,21 @@ int pars_struct(t_pf_param *param);
 
 int esli_d(t_pf_param *param);
 int go_precision(t_pf_param *param);
+int go_precision_s(t_pf_param *param);
 int go_width(t_pf_param *param);
 int go_flags(t_pf_param *param);
 
 int esli_c(t_pf_param *param);
-
+int esli_o(t_pf_param *param);
+int esli_u(t_pf_param *param);
 int esli_s(t_pf_param *param);
+int esli_x(t_pf_param *param);
 
 
 
+
+char	*itoa_base(unsigned int value, unsigned int base, t_pf_param *param);
+static int		conv_ex(unsigned int nb, t_pf_param *param);	
 
 
 #endif

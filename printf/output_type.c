@@ -81,8 +81,8 @@ int zap_struct(t_string *string, t_pf_param *param, va_list list)
 
 int ft_value(t_pf_param *param, t_value *value, va_list list)
 {
-    int i;
-
+    intmax_t i;
+    
     i = 0;
     if (param->conversion == 'c' || param->conversion == 'C')
         value->cha = va_arg(list, int);    
@@ -90,6 +90,11 @@ int ft_value(t_pf_param *param, t_value *value, va_list list)
         value->str = va_arg(list, char *);
     if (param->conversion == 'd' || param->conversion == 'D' || param->conversion == 'i')
         value->i = va_arg(list, int);
+    if (param->conversion == 'u' || param->conversion == 'o' || param->conversion == 'x' ||param->conversion == 'X')
+    {
+       value->u = va_arg(list, unsigned int);
+       //value->u = (unsigned int)value->i;
+    }
     //if (param->conversion == 'd')
         //printf("%d", param->value);
  //       printf("%d ", value->i);
@@ -179,7 +184,7 @@ int is_flag(t_string *string, t_pf_param *param, t_flags *flags)
     {
         if (str1[i] == '#')
             flags->slesh = 1;
-        if (str1[i] == '0' && (str1[i - 1] < '0' || str1[i - 1] > '9'))
+        if (str1[i] == '0' && (str1[i - 1] < '0' || str1[i - 1] > '9') && str1[i - 1] != '.')
             flags->zero = 1;
         if (str1[i] == '-')
             flags->minus = 1;

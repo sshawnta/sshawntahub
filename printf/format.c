@@ -6,7 +6,7 @@
 /*   By: sshawnta <sshawnta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 15:16:32 by sshawnta          #+#    #+#             */
-/*   Updated: 2019/05/22 16:42:04 by sshawnta         ###   ########.fr       */
+/*   Updated: 2019/05/23 15:08:23 by sshawnta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@ int ft_parse_format(const char *str, va_list list)
     char *str1;
     int j;
     int len;
-    
+    int len2;
     len = 0;
+    len2 = 0;
     //str1 = malloc(sizeof(char *) * 100);
     //param = (t_pf_param *)malloc(sizeof(t_pf_param));
     //string = (t_string *)malloc(sizeof(t_string));
@@ -41,7 +42,7 @@ int ft_parse_format(const char *str, va_list list)
             {
                 if (str[k] == 'c' || str[k] == 's' || str[k] == 'p' || str[k] == 'd'
                     || str[k] == 'i' || str[k] == 'o' || str[k] == 'x' || str[k] == 'f'
-                    || str[k] == 'X' || str[k] == 'D')
+                    || str[k] == 'X' || str[k] == 'D' || str[k] == 'u')
                 {
                     param = (t_pf_param *)malloc(sizeof(t_pf_param));
                     string = (t_string *)malloc(sizeof(t_string));
@@ -61,17 +62,21 @@ int ft_parse_format(const char *str, va_list list)
                 j++;
             }
             //
+            len += param->str.length;
+
             j = 0;
         }
         if(str[k] == '%')
             break;
-        write(1, &str[k], 1);
+        if (str[k] != '\0')
+            write(1, &str[k], 1);
         if (str[k] == '\0')
             break ;
-        len++;
+        len2++;
         k++;
    }
    }
    param->str.length = ft_strlen(param->str.str);
-    return (len + param->str.length);
+    len = len + len2;
+    return (len);
 }

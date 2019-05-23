@@ -8,6 +8,31 @@ int pars_struct(t_pf_param *param)
         esli_c(param);
     if (param->conversion == 's' || param->conversion == 'S')
         esli_s(param);
+    if (param->conversion == 'o')
+        esli_o(param);
+    if (param->conversion == 'u')
+        esli_u(param);
+    if (param->conversion == 'x' || param->conversion == 'X')
+        esli_x(param);
+
+    return (0);
+}
+int esli_x(t_pf_param *param)
+{
+    param->str.str = itoa_base(param->value.u, 16, param);
+    if (param->flags.slesh == 1 && param->conversion == 'x')
+        param->str.str = ft_strjoin("0x", param->str.str);
+    else if (param->flags.slesh == 1 && param->conversion == 'X')
+        param->str.str = ft_strjoin("0X", param->str.str);
+    esli_d(param);
+    return (0);
+}
+
+int esli_o(t_pf_param *param)
+{
+    param->str.str = itoa_base(param->value.u, 8, param);
+    //param->value.i = ft_atoi(param->str.str);
+    esli_d(param);
     return (0);
 }
 
@@ -31,6 +56,24 @@ int esli_c(t_pf_param *param)
 
 int esli_s(t_pf_param *param)
 {
+    param->str.str = ft_strdup(param->value.str);
+    param->str.length = ft_strlen(param->str.str);
+    if (param->precision > 0 && param->precision < param->str.length)
+        go_precision_s(param);
+    if (param->width > 0)
+        go_width(param);
+    param->str.length = ft_strlen(param->str.str);
+    ft_putstr(param->str.str);
+    return (0);
+}
+
+int esli_u(t_pf_param *param)
+{
+    //ft_putstr(ft_itoa(param->value.u));
+    //param->value.i = param->value.u;
+    param->str.str = itoa_base(param->value.u, 10, param);
+    //ft_putstr(param->str.str);
+    esli_d(param);
     return (0);
 }
 
@@ -40,10 +83,15 @@ int esli_d(t_pf_param *param)
     int i;
 
     i = 0;
-    param->str.str = ft_itoa(param->value.i);
+    if(param->conversion == 'd' || param->conversion == 'D')
+        param->str.str = ft_itoa(param->value.i);
     param->str.length = ft_strlen(param->str.str);
+    if (param->precision > 0)
+        param->flags.zero = 0;
     if (param->value.i < 0)
-        param->str.length -= 1;    
+        param->str.length -= 1;
+    if (param->flags.minus == 1)
+        param->flags.zero = 0;    
     if (param->precision >= param->width)// && param->precision > param->str.length)
         go_precision(param);
     if (param->width > param->precision && param->width >= param->str.length)
@@ -59,6 +107,24 @@ int esli_d(t_pf_param *param)
     return (0);
 }
 
+int go_precision_s(t_pf_param *param)
+{
+    char *str;
+    int i;
+
+    i = 0;
+    str = malloc(sizeof(char *) * param->precision);
+    while (i < param->precision)
+    {
+        str[i] = param->str.str[i];
+        i++;
+    }
+    //ft_putstr(str);
+    ft_strcpy(param->str.str, str);
+    param->str.length = param->precision;
+    free(str);
+    return (0);
+}
 int go_flags(t_pf_param *param)
 {
     char *str;
@@ -70,6 +136,8 @@ int go_flags(t_pf_param *param)
         param->flags.space = 0;
     if (param->flags.space == 1 && param->value.i >= 0 && (param->width <= param->str.length || param->precision >= param->width))
         param->str.str = ft_strjoin(" ", param->str.str);
+    if (param->flags.slesh == 1 && param->conversion == 'o')
+        param->str.str = ft_strjoin("0", param->str.str);
     free(str);
     return (0);
 }
@@ -101,7 +169,7 @@ int go_precision(t_pf_param *param)
         str[i] = tmp;
     }
     i = 0;
-    if (param->value.i > 0 && param->flags.plus == 1)
+    if (param->value.i >= 0 && param->flags.plus == 1)
     {
         str = ft_strjoin("+", str);
     }
@@ -142,7 +210,7 @@ int go_width(t_pf_param *param)
         while (i < param->width - param->str.length)
             str[i++] = zero;
         if (param->flags.plus == 1 && param->value.i >= 0)
-            str = ft_strjoin(str, "+");
+            str = ft_strjoin("+", str); // менял местами аргументы  
     }
     i = 0;
     if (param->flags.zero == 1 && param->precision != 0 && param->precision < param->width)
@@ -157,4 +225,44 @@ int go_width(t_pf_param *param)
     param->str.str = str;
     free(str);
     return (0);
+}
+
+static int		conv_ex(unsigned int nb, t_pf_param *param)
+{
+	if (nb >= 10)
+    {
+        if(param->conversion == 'X')
+		    return (nb - 10 + 'A');
+        else
+            return (nb - 10 + 'a');
+        
+    }
+    else
+		return (nb + '0');
+}
+
+char	*itoa_base(unsigned int value, unsigned int base, t_pf_param *param)
+{
+	int					i;
+	char				*str;
+	unsigned int				tmp;
+	
+	i = 0;
+	tmp = value;
+	while (tmp >= base)
+	{
+		tmp = tmp / base;
+		i++;
+	}	
+	if (!(str = (char *)malloc(sizeof(char) * (i + 1))))
+		return (NULL);
+	str[i + 1] = '\0';
+	while (i >= 0)
+	{
+		tmp = value % base;
+		str[i] = conv_ex(tmp, param);
+		value /= base;
+		i--;
+	}
+	return (str);
 }
