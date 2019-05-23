@@ -6,7 +6,7 @@
 /*   By: sshawnta <sshawnta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 15:11:21 by sshawnta          #+#    #+#             */
-/*   Updated: 2019/05/23 18:02:25 by sshawnta         ###   ########.fr       */
+/*   Updated: 2019/05/23 20:32:38 by sshawnta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,10 @@ int main()
 	//ft_printf("%2c %15c\n", 'a', 'v');
 	//printf("%2c %15c\n", 'a', 'v');
 	
-	ft_printf("%#8x\n", 42);
-	printf("%#8x", 42);
+	ft_printf("null %c and text\n", 0);
+	printf("null %c and text", 0);
+	
+	
 	//ft_printf("%.0d",42);
 	//printf("%20.15d %+14.13d\n", d1, d);
 	//printf("Bukva %c eshe bukva %c cifra %d eshe cifra %d odin \n", i, s, d, d1, str1, str2, poi1, poi2);

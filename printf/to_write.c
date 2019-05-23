@@ -51,12 +51,20 @@ int esli_c(t_pf_param *param)
         go_width(param);
     param->str.length = ft_strlen(param->str.str);
     ft_putstr(param->str.str);
+    if (param->value.cha == 0)
+    {
+        write(1,"\0", 1);        
+        param->str.length = 1;
+    }
     return (0);
 }
 
 int esli_s(t_pf_param *param)
 {
-    param->str.str = ft_strdup(param->value.str);
+    if (param->value.str == NULL)
+        param->str.str = ft_strdup("(null)");
+    else    
+        param->str.str = ft_strdup(param->value.str);
     param->str.length = ft_strlen(param->str.str);
     if (param->precision > 0 && param->precision < param->str.length)
         go_precision_s(param);
@@ -71,20 +79,59 @@ int esli_u(t_pf_param *param)
 {
     //ft_putstr(ft_itoa(param->value.u));
     //param->value.i = param->value.u;
-    param->str.str = itoa_base(param->value.u, 10, param);
+    //param->str.str = ftt_itoa_base(param->value.u, 10, param);
+    if (param->flags.space == 1)
+        param->flags.space = 0;
+    param->str.str = ftt_itoa(param->value.u);
     //ft_putstr(param->str.str);
     esli_d(param);
     return (0);
 }
 
+static void	ft_itoa_is_negative(intmax_t *n, intmax_t *negative)
+{
+	if (*n < 0)
+	{
+		*n = *n * (-1);
+		*negative = 1;
+	}
+}
 
+char		*ftt_itoa(intmax_t n)
+{
+	intmax_t		tmp_n;
+	intmax_t		len;
+	intmax_t		negative;
+	char	*str;
+
+	if (n == -2147483648)
+		return (ft_strdup("-2147483648"));
+	tmp_n = n;
+	len = 2;
+	negative = 0;
+	ft_itoa_is_negative(&n, &negative);
+	while (tmp_n /= 10)
+		len++;
+	len = len + negative;
+	if (!(str = (char*)malloc(len)))
+		return (NULL);
+	str[--len] = '\0';
+	while (len--)
+	{
+		str[len] = n % 10 + '0';
+		n = n / 10;
+	}
+	if (negative)
+		str[0] = '-';
+	return (str);
+}
 int esli_d(t_pf_param *param)
 {
     int i;
 
     i = 0;
     if(param->conversion == 'd' || param->conversion == 'D')
-        param->str.str = ft_itoa(param->value.i);
+        param->str.str = ftt_itoa(param->value.i);
     param->str.length = ft_strlen(param->str.str);
     if (param->precision > 0)
         param->flags.zero = 0;

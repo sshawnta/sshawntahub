@@ -6,7 +6,7 @@
 /*   By: sshawnta <sshawnta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 15:16:32 by sshawnta          #+#    #+#             */
-/*   Updated: 2019/05/23 15:08:23 by sshawnta         ###   ########.fr       */
+/*   Updated: 2019/05/23 20:12:56 by sshawnta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ int ft_parse_format(const char *str, va_list list)
                 j++;
             }
             //
-            len += param->str.length;
+            if (param != NULL)
+                len += param->str.length;
 
             j = 0;
         }
@@ -76,7 +77,8 @@ int ft_parse_format(const char *str, va_list list)
         k++;
    }
    }
-   param->str.length = ft_strlen(param->str.str);
+   if (param != NULL)
+       param->str.length = ft_strlen(param->str.str);
     len = len + len2;
     return (len);
 }

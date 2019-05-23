@@ -6,7 +6,7 @@
 /*   By: sshawnta <sshawnta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 15:17:27 by sshawnta          #+#    #+#             */
-/*   Updated: 2019/05/23 18:04:17 by sshawnta         ###   ########.fr       */
+/*   Updated: 2019/05/23 19:59:52 by sshawnta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,12 @@ typedef struct s_value
 {
 	char cha;
 	char *str;
-	int i;
-	unsigned int u;
+	//int i;
+	intmax_t i;
+	uintmax_t u;
+	//unsigned int u;
 	float f;
+	//void *fi;
 } t_value;
 
 typedef struct	s_param
@@ -95,7 +98,11 @@ int esli_x(t_pf_param *param);
 
 
 char	*itoa_base(unsigned int value, unsigned int base, t_pf_param *param);
-static int		conv_ex(unsigned int nb, t_pf_param *param);	
+static int		conv_ex(unsigned int nb, t_pf_param *param);
+
+
+static void	ft_itoa_is_negative(intmax_t *n, intmax_t *negative);
+char		*ftt_itoa(intmax_t n);
 
 
 #endif

@@ -45,7 +45,7 @@ int zap_struct(t_string *string, t_pf_param *param, va_list list)
     flags->space = 0;//
     flags->plus = 0;//
     flags->zero = 0; //закинуть в другую функцию
-    
+    param->modifier = NONE;
     /* Отдельная функц */
     param->width = is_width(string, param);
     //while (*(string->str++) != '\0')
@@ -81,18 +81,39 @@ int zap_struct(t_string *string, t_pf_param *param, va_list list)
 
 int ft_value(t_pf_param *param, t_value *value, va_list list)
 {
-    intmax_t i;
-    
-    i = 0;
     if (param->conversion == 'c' || param->conversion == 'C')
         value->cha = va_arg(list, int);    
     if (param->conversion == 's' || param->conversion == 'S')
         value->str = va_arg(list, char *);
     if (param->conversion == 'd' || param->conversion == 'D' || param->conversion == 'i')
-        value->i = va_arg(list, int);
+    {
+        if (param->modifier == LL)
+            value->i = va_arg(list, long long int);
+        else if (param->modifier == L)
+            value->i = va_arg(list, long int);
+        else if (param->modifier == HH)
+            value->i = va_arg(list, signed char);
+        else if (param->modifier == H)
+            value->i = va_arg(list, short int);
+        else if (param->modifier == J)
+            value->i = va_arg(list, intmax_t);
+        else
+            value->i = va_arg(list, int);
+    }
     if (param->conversion == 'u' || param->conversion == 'o' || param->conversion == 'x' ||param->conversion == 'X')
     {
-       value->u = va_arg(list, unsigned int);
+        if (param->modifier == LL)
+            value->u = va_arg(list, unsigned long long int);
+        else if (param->modifier == L)
+            value->u = va_arg(list, unsigned long int);
+        else if (param->modifier == HH)
+            value->u = va_arg(list, unsigned char);
+        else if (param->modifier == H)
+            value->u = va_arg(list, unsigned short int);
+        else if (param->modifier == J)
+            value->u = va_arg(list, uintmax_t);
+        else
+            value->u = va_arg(list, unsigned int);
        //value->u = (unsigned int)value->i;
     }
     //if (param->conversion == 'd')
@@ -209,15 +230,30 @@ int is_modifire(char *str, t_pf_param *param)
     while (str[i] != '\0')
     {
         if (str[i] == 'l' && str[i + 1] =='l')
+        {
             param->modifier = LL;
-        if (str[i] == 'h' && str[i + 1] =='h')
-            param->modifier = HH;
-        if (str[i] == 'l')
+            break ;    
+        }
+        else if (str[i] == 'l')
+        {
             param->modifier = L;
-        if (str[i] == 'h')
+            break ;
+        }
+        else if (str[i] == 'h' && str[i + 1] =='h')
+        {    
+            param->modifier = HH;
+            break ;
+        }
+        else if (str[i] == 'h')
+        {    
             param->modifier = H;
-        if (str[i] == 'H')
+            break ;
+        }
+        else if (str[i] == 'j')
+        {    
             param->modifier = J;
+            break ;
+        }
         i++;
     }
     return(1);
