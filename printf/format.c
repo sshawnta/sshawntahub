@@ -6,7 +6,7 @@
 /*   By: sshawnta <sshawnta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 15:16:32 by sshawnta          #+#    #+#             */
-/*   Updated: 2019/05/23 20:12:56 by sshawnta         ###   ########.fr       */
+/*   Updated: 2019/05/24 15:27:53 by sshawnta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int ft_parse_format(const char *str, va_list list)
     //str1 = malloc(sizeof(char *) * 100);
     //param = (t_pf_param *)malloc(sizeof(t_pf_param));
     //string = (t_string *)malloc(sizeof(t_string));
-    a = malloc(sizeof(char *) * 3);
+    a = ft_memalloc(sizeof(char *) * 3);
     k = 0;
     j = 0;
     while(str[k] != '\0')
@@ -42,7 +42,7 @@ int ft_parse_format(const char *str, va_list list)
             {
                 if (str[k] == 'c' || str[k] == 's' || str[k] == 'p' || str[k] == 'd'
                     || str[k] == 'i' || str[k] == 'o' || str[k] == 'x' || str[k] == 'f'
-                    || str[k] == 'X' || str[k] == 'D' || str[k] == 'u')
+                    || str[k] == 'X' || str[k] == 'D' || str[k] == 'u' || str[k] == 'U')
                 {
                     param = (t_pf_param *)malloc(sizeof(t_pf_param));
                     string = (t_string *)malloc(sizeof(t_string));

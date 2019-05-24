@@ -6,7 +6,7 @@
 /*   By: sshawnta <sshawnta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 15:11:21 by sshawnta          #+#    #+#             */
-/*   Updated: 2019/05/23 20:32:38 by sshawnta         ###   ########.fr       */
+/*   Updated: 2019/05/24 16:11:46 by sshawnta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,12 @@ int main()
 	
 	//ft_printf("%2c %15c\n", 'a', 'v');
 	//printf("%2c %15c\n", 'a', 'v');
-	
-	ft_printf("null %c and text\n", 0);
-	printf("null %c and text", 0);
+	ft_printf("@moulitest: %5.d %5.d\n", 0, 0);
+	printf("@moulitest: %5.d %5.0d\n", 0, 0);
+	ft_printf("@moulitest: %#.o %#.0o\n", 0, 0);
+	printf("@moulitest: %#.o %#.0o", 0 , 0);
+	//ft_printf("%0+5d\n", 42);
+	//printf("%0+5d", 42);
 	
 	
 	//ft_printf("%.0d",42);

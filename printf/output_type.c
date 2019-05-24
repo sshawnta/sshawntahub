@@ -36,8 +36,8 @@ int zap_struct(t_string *string, t_pf_param *param, va_list list)
     t_flags *flags;
     t_value *value;
     
-    value = (t_value *)malloc(sizeof(t_value));
-    flags = (t_flags *)malloc(sizeof(t_flags));
+    value = (t_value *)ft_memalloc(sizeof(t_value));
+    flags = (t_flags *)ft_memalloc(sizeof(t_flags));
     str1 = string->str;
     param->str = *string;
     flags->minus = 0;//
@@ -46,6 +46,7 @@ int zap_struct(t_string *string, t_pf_param *param, va_list list)
     flags->plus = 0;//
     flags->zero = 0; //закинуть в другую функцию
     param->modifier = NONE;
+    //param->precision = -1;
     /* Отдельная функц */
     param->width = is_width(string, param);
     //while (*(string->str++) != '\0')
@@ -97,12 +98,16 @@ int ft_value(t_pf_param *param, t_value *value, va_list list)
             value->i = va_arg(list, short int);
         else if (param->modifier == J)
             value->i = va_arg(list, intmax_t);
+        else if (param->modifier == Z)
+            value->i = va_arg(list, ssize_t);
         else
             value->i = va_arg(list, int);
     }
-    if (param->conversion == 'u' || param->conversion == 'o' || param->conversion == 'x' ||param->conversion == 'X')
+    if (param->conversion == 'U' || param->conversion == 'u' || param->conversion == 'o' || param->conversion == 'x' ||param->conversion == 'X')
     {
-        if (param->modifier == LL)
+        if (param->conversion == 'U')
+            value->u = va_arg(list, unsigned long int);
+        else if (param->modifier == LL)
             value->u = va_arg(list, unsigned long long int);
         else if (param->modifier == L)
             value->u = va_arg(list, unsigned long int);
@@ -145,7 +150,7 @@ int ft_precision(t_string *string, t_pf_param *param)
     i = 0;
     res = 0;
     str1 = ft_strdup(string->str);
-    str2 = malloc(sizeof(str1));
+    str2 = ft_memalloc(sizeof(str1));
     while (str1[i] != '\0')
     {
         if (str1[i] == '.')
@@ -157,6 +162,7 @@ int ft_precision(t_string *string, t_pf_param *param)
                 res++;
                 i++;
             }
+            param->flag_pre = 1;
         }
         i++;
     }
@@ -176,7 +182,7 @@ unsigned int is_width(t_string *string, t_pf_param *param)
     i = 0;
     res = 0;
     str1 = ft_strdup(string->str);
-    str2 = malloc(sizeof(str1));
+    str2 = ft_memalloc(sizeof(str1));
     while (str1[i] != '\0')
     {
         if(str1[i] >= '0' && str1[i] <= '9')
@@ -247,6 +253,11 @@ int is_modifire(char *str, t_pf_param *param)
         else if (str[i] == 'h')
         {    
             param->modifier = H;
+            break ;
+        }
+        else if (str[i] == 'z')
+        {
+            param->modifier = Z;
             break ;
         }
         else if (str[i] == 'j')

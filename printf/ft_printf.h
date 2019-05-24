@@ -6,7 +6,7 @@
 /*   By: sshawnta <sshawnta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 15:17:27 by sshawnta          #+#    #+#             */
-/*   Updated: 2019/05/23 19:59:52 by sshawnta         ###   ########.fr       */
+/*   Updated: 2019/05/24 13:25:55 by sshawnta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 typedef enum	e_pf_modifier
 {
-	NONE = 0, L = 1, H = 2, J = 3, LL = 4, HH = 5
+	NONE = 0, L = 1, H = 2, J = 3, LL = 4, HH = 5, Z = 6
 }				t_pf_modifier;
 typedef struct s_flags
 {
@@ -58,6 +58,7 @@ typedef struct	s_param
 	t_flags			flags;
 	unsigned int	width;
 	int				precision;
+	int				flag_pre;
 	t_pf_modifier	modifier;
 	char			conversion;
 	int				error;
@@ -97,8 +98,8 @@ int esli_x(t_pf_param *param);
 
 
 
-char	*itoa_base(unsigned int value, unsigned int base, t_pf_param *param);
-static int		conv_ex(unsigned int nb, t_pf_param *param);
+char	*itoa_base(uintmax_t value, uintmax_t base, t_pf_param *param);
+static int		conv_ex(uintmax_t nb, t_pf_param *param);
 
 
 static void	ft_itoa_is_negative(intmax_t *n, intmax_t *negative);
