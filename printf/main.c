@@ -6,7 +6,7 @@
 /*   By: sshawnta <sshawnta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 15:11:21 by sshawnta          #+#    #+#             */
-/*   Updated: 2019/05/24 17:08:48 by sshawnta         ###   ########.fr       */
+/*   Updated: 2019/05/24 19:38:39 by sshawnta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ int main()
 	ft_printf("test 0 %012d f\n", d1);
 	printf("test 0 %012d p\n", d1);*/
 	
-	ft_printf("%#llx\n", 9223372036854775807);
-	printf("%#llx", 9223372036854775807);
+	ft_printf("%-5+d", 42);
+	printf("%-5+d", 42);
 	//ft_printf("%-5%\n");
 	//printf("%-5%");
 	//ft_printf("%0+5d\n", 42);

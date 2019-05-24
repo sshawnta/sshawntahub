@@ -6,7 +6,7 @@
 /*   By: sshawnta <sshawnta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 15:16:32 by sshawnta          #+#    #+#             */
-/*   Updated: 2019/05/24 17:05:03 by sshawnta         ###   ########.fr       */
+/*   Updated: 2019/05/24 18:52:54 by sshawnta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,21 @@ int ft_parse_format(const char *str, va_list list)
                     j++;
                     if(is_it_varificated(string))
                        zap_struct(string, param, list);
-                    else
-                        k -= j - 1;
+                        else
+                            k -= j - 1;
+                        break;
+                }
+                if (is_valid(str[k]) && str[k] != is_conversion(str[k]))
+                {
+                    str1[j] = str[k];
+                    k++;
+                    j++;
+                }
+                else
+                {
+                   // k -= j;
                     break;
                 }
-                str1[j] = str[k];
-                k++;
-                j++;
             }
             //
             if (param != NULL)

@@ -237,7 +237,8 @@ int is_modifire(char *str, t_pf_param *param)
         return (0);
     while (str[i] != '\0')
     {
-        if (str[i] == 'l' && str[i + 1] =='l')
+        if (is_it_modifier(str[i + 3]))
+        {if (str[i] == 'l' && str[i + 1] =='l')
         {
             param->modifier = LL;
             break ;    
@@ -266,6 +267,7 @@ int is_modifire(char *str, t_pf_param *param)
         {    
             param->modifier = J;
             break ;
+        }
         }
         i++;
     }

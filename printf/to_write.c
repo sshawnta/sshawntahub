@@ -22,6 +22,8 @@ int pars_struct(t_pf_param *param)
 
 int esli_proc(t_pf_param *param)
 {
+    if (param->flags.minus == 1)
+        param->flags.zero = 0;
     param->str.str = ft_strdup("%");
     param->str.length = ft_strlen(param->str.str);
     if (param->width > 0)
@@ -96,6 +98,8 @@ int esli_c(t_pf_param *param)
 
 int esli_s(t_pf_param *param)
 {
+    if (param->flags.minus == 1)
+        param->flags.zero = 0;
     if (param->value.str == NULL)
         param->str.str = ft_strdup("(null)");
     else    
@@ -168,6 +172,8 @@ int esli_d(t_pf_param *param)
     char tmp;
 
     i = 0;
+    //if (param->modifier == HH && param->value.i < 0)
+        //param->value.i *= -1;
     if(param->conversion == 'd' || param->conversion == 'D')
         param->str.str = ftt_itoa(param->value.i);
     param->str.length = ft_strlen(param->str.str);
