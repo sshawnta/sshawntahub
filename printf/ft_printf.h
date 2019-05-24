@@ -6,7 +6,7 @@
 /*   By: sshawnta <sshawnta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 15:17:27 by sshawnta          #+#    #+#             */
-/*   Updated: 2019/05/24 13:25:55 by sshawnta         ###   ########.fr       */
+/*   Updated: 2019/05/24 16:54:26 by sshawnta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct	s_param
 	int				error;
 	t_value			value;
 	int				value_minus;
+	int				flag_slesh;
 	//void			*value;
 }				t_pf_param;
 
@@ -94,6 +95,7 @@ int esli_o(t_pf_param *param);
 int esli_u(t_pf_param *param);
 int esli_s(t_pf_param *param);
 int esli_x(t_pf_param *param);
+int esli_proc(t_pf_param *param);
 
 
 

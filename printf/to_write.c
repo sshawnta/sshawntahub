@@ -14,9 +14,23 @@ int pars_struct(t_pf_param *param)
         esli_u(param);
     if (param->conversion == 'x' || param->conversion == 'X')
         esli_x(param);
+    if (param->conversion == '%')
+        esli_proc(param);
 
     return (0);
 }
+
+int esli_proc(t_pf_param *param)
+{
+    param->str.str = ft_strdup("%");
+    param->str.length = ft_strlen(param->str.str);
+    if (param->width > 0)
+        go_width(param);
+    param->str.length = ft_strlen(param->str.str);
+    ft_putstr(param->str.str);
+    return (0);
+}
+
 int esli_x(t_pf_param *param)
 {
     if (param->value.u == 0)
@@ -47,6 +61,8 @@ int esli_o(t_pf_param *param)
             param->str.str = " "; 
     if (param->flags.slesh == 1 && param->value.u != 0)
         param->str.str = ft_strjoin("0", param->str.str);
+    if (param->flags.slesh == 1 && param->value.u == 0)
+        param->flag_slesh = 1;
     param->flags.slesh = 0;
     //if ((param->precision == 0 && param->value.u == 0)
         //param->str.str = " ";
@@ -163,11 +179,17 @@ int esli_d(t_pf_param *param)
         param->flags.zero = 0;
     if (param->conversion != 'o' || param->conversion == 'O')
     {
-        if (param->flag_pre == 1 && param->precision == 0)    
+        if (param->flag_pre == 1 && param->precision == 0 && param->value.i == 0 && param->value.u == 0)    
             param->str.str = "";
-        if (param->width > 0 && param->flag_pre == 1 && param->precision == 0 && param->value.u == 0)
-            param->str.str = " ";    
+        if (param->width > 0 && param->flag_pre == 1 && param->precision == 0 && param->value.u == 0 && param->value.i == 0)
+            param->str.str = " "; 
     }
+    else
+    {
+        if (param->flag_slesh == 1 && param->value.u == 0)
+            param->str.str = "0";
+    }
+    
     if (param->precision >= param->width)// && param->precision > param->str.length)
         go_precision(param);
     if (param->width > param->precision && param->width >= param->str.length)

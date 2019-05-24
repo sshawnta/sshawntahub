@@ -103,6 +103,8 @@ int ft_value(t_pf_param *param, t_value *value, va_list list)
         else
             value->i = va_arg(list, int);
     }
+    if (param->conversion == '%')
+        value->cha = '%';
     if (param->conversion == 'U' || param->conversion == 'u' || param->conversion == 'o' || param->conversion == 'x' ||param->conversion == 'X')
     {
         if (param->conversion == 'U')
