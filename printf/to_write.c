@@ -129,7 +129,7 @@ int esli_u(t_pf_param *param)
     return (0);
 }
 
-static void	ft_itoa_is_negative(intmax_t *n, intmax_t *negative)
+inline static void	ft_itoa_is_negative(intmax_t *n, intmax_t *negative)
 {
 	if (*n < 0)
 	{
@@ -145,8 +145,8 @@ char		*ftt_itoa(intmax_t n)
 	intmax_t		negative;
 	char	*str;
 
-	if (n == -2147483648)
-		return (ft_strdup("-2147483648"));
+    //if (n == 9223372036854775808)
+		//return (ft_strdup("-9223372036854775808"));
 	tmp_n = n;
 	len = 2;
 	negative = 0;
@@ -238,7 +238,7 @@ int esli_d(t_pf_param *param)
 int go_precision_s(t_pf_param *param)
 {
     char *str;
-    int i;
+    size_t i;
 
     i = 0;
     str = ft_memalloc(sizeof(char *) * param->precision);
@@ -256,7 +256,7 @@ int go_precision_s(t_pf_param *param)
 int go_flags(t_pf_param *param)
 {
     char *str;
-    int i;
+    size_t i;
 
     str = ft_strdup(param->str.str);
     i = ft_strlen(str);
@@ -273,7 +273,7 @@ int go_flags(t_pf_param *param)
 int go_precision(t_pf_param *param)
 {
     char *str;
-    int i;
+    size_t i;
     int j;
     char tmp;
     char zero;
@@ -314,7 +314,7 @@ int go_precision(t_pf_param *param)
 int go_width(t_pf_param *param)
 {
     char *str;
-    int i;
+    size_t i;
     char zero;
 
     i = 0;
@@ -360,7 +360,7 @@ int go_width(t_pf_param *param)
     return (0);
 }
 
-static int		conv_ex(uintmax_t nb, t_pf_param *param)
+inline static int		conv_ex(uintmax_t nb, t_pf_param *param)
 {
 	if (nb >= 10)
     {
@@ -382,6 +382,7 @@ char	*itoa_base(uintmax_t value, uintmax_t base, t_pf_param *param)
 	
 	i = 0;
 	tmp = value;
+
 	while (tmp >= base)
 	{
 		tmp = tmp / base;

@@ -6,7 +6,7 @@
 /*   By: sshawnta <sshawnta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 15:16:32 by sshawnta          #+#    #+#             */
-/*   Updated: 2019/05/24 18:52:54 by sshawnta         ###   ########.fr       */
+/*   Updated: 2019/05/25 13:00:33 by sshawnta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int ft_parse_format(const char *str, va_list list)
 {
     int k;
     char *a;
-    int  c;
     t_pf_param *param;
     t_string *string;
     char *str1;
@@ -81,9 +80,9 @@ int ft_parse_format(const char *str, va_list list)
 
             j = 0;
         }
-        //if(str[k] == '%')
-            //break;
-        if (str[k] != '\0')
+        if(str[k] == '%')
+            break;
+        if (str[k] != '\0')// && str[k] != '%')
             write(1, &str[k], 1);
         if (str[k] == '\0')
             break ;

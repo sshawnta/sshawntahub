@@ -6,7 +6,7 @@
 /*   By: sshawnta <sshawnta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 15:11:21 by sshawnta          #+#    #+#             */
-/*   Updated: 2019/05/24 19:38:39 by sshawnta         ###   ########.fr       */
+/*   Updated: 2019/05/25 14:33:15 by sshawnta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,6 @@
 
 int main()
 {
-	char i = '4';
-	char *s;
-	int d = -134;
-	int d1 = 133;
-	char *str1 = "stroka1";
-	char *str2 = "stroka2";
-	int *poi2;
-	
-	poi2 = &d;
 	//ft_printf("Bu %#-h15.2d eshe bukva %-4c cifra %s eshe cifra %d odin\n", d1, i, s, d1);
 	//ft_printf("%#-d %d ", d1, d);
 /*
@@ -50,8 +41,8 @@ int main()
 	ft_printf("test 0 %012d f\n", d1);
 	printf("test 0 %012d p\n", d1);*/
 	
-	ft_printf("%-5+d", 42);
-	printf("%-5+d", 42);
+	ft_printf("%#llx\n", 9223372036854775807);
+	printf("%#llx", 9223372036854775807);
 	//ft_printf("%-5%\n");
 	//printf("%-5%");
 	//ft_printf("%0+5d\n", 42);
