@@ -6,7 +6,7 @@
 /*   By: sshawnta <sshawnta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 15:17:27 by sshawnta          #+#    #+#             */
-/*   Updated: 2019/05/25 14:13:50 by sshawnta         ###   ########.fr       */
+/*   Updated: 2019/05/27 17:29:31 by sshawnta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct		s_string
 	char			*str;
 	size_t			length;
 }					t_string;
+
 typedef struct		s_value
 {
 	char			cha;
@@ -93,6 +94,7 @@ int					esli_x(t_pf_param *param);
 int					esli_proc(t_pf_param *param);
 
 int					is_it_modifier(const char c);
+int			is_conversion(const char c);
 
 char				*itoa_base(uintmax_t value, uintmax_t base, t_pf_param *param);
 char				*ftt_itoa(intmax_t n);
