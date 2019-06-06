@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   printf.c                                           :+:      :+:    :+:   */
+/*   ft_lstdel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sshawnta <sshawnta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sshawnta <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/26 15:12:43 by sshawnta          #+#    #+#             */
-/*   Updated: 2019/05/27 18:20:46 by sshawnta         ###   ########.fr       */
+/*   Created: 2019/04/06 13:42:41 by sshawnta          #+#    #+#             */
+/*   Updated: 2019/04/06 13:46:04 by sshawnta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
-int			ft_printf(const char *format, ...)
+void	ft_lstdel(t_list **alst, void (*del)(void *, size_t))
 {
-	va_list			list;
-	int				result;
+	t_list	*ptr;
+	t_list	*tmp;
 
-	va_start(list, format);
-	result = ft_parse_format(format, list);
-	va_end(list);
-	//printf("%d\n", result);
-	return (result);
+	ptr = *alst;
+	while (ptr)
+	{
+		tmp = ptr;
+		ft_lstdelone(&ptr, del);
+		ptr = tmp->next;
+	}
+	*alst = NULL;
 }
