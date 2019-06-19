@@ -1,0 +1,16 @@
+10 10 10 10 10 10 10 10 15 20 300 3
+
+Reading algorithm:
+
+1. Open the file;
+2. Read a line;
+3. Check a line (strsplit)
+    a. Are the numbers splitted correctly?
+    b. What is the total count of numbers?
+4. Get a char **tab:
+    a. Count the numbers amount;
+    b. Convert words to numbers (atoi);
+    c. Write every number into an int array;
+5. Check the number of lines;
+
+Expected outcome = integer matrix.

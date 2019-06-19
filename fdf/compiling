@@ -1,0 +1,4 @@
+gcc -Wall -Wextra -Werror -g -L minilibx -I minilibx -lmlx -framework OpenGL -framework AppKit main.c parser.c -I libft/libft.h libft/libft.a
+valgrind --suppressions=valgrind_supressions --leak-check=yes ./a.out test_maps/10-2.fdf
+
+nroff -man
