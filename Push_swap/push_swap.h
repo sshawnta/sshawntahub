@@ -1,11 +1,11 @@
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <string.h>
-#include "ft_printf/ft_printf.h"
+# include <stdlib.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <string.h>
+# include "ft_printf/ft_printf.h"
 
 # define ABS(x) (x < 0 ? -(x) : x)
 # define MAX_INT 2147483647
@@ -22,9 +22,6 @@
 # define BUFF_SIZE 32
 # define MAX_FD 1024 + 1
 
-enum { ONE, BOTH };
-enum { INC, DECd };
-
 typedef struct	s_stack
 {
 	int				value;
@@ -37,12 +34,11 @@ typedef struct	s_move
 	struct s_move	*next;
 }				t_move;
 
-
 typedef struct	s_arg
 {
 	short	name;
 	short	color;
-	short file;
+	short	file;
 }				t_arg;
 
 typedef struct	s_env
@@ -62,12 +58,12 @@ typedef struct	s_env
 }				t_env;
 
 /*Glavnaya tema*/
-void check_err(t_env *point, int argc, char **argv);
+int check_err(t_env *point, int argc, char **argv);
 void create_stacks(t_env *point, int argc, char **argv);
 void	error(int err);
 
 /*GNL*/
-int file_read(t_env *point, int argc, char **argv);
+void	file_read(t_env *point, int argc, char **argv, int i);
 int	get_next_line(const int fd, char **line);
 int		ft_new_line(char **s, char **line, int fd, int ret);
 typedef struct	s_list
@@ -109,7 +105,7 @@ int	ft_strcmp(const char *s1, const char *s2);
 void	ft_putstr(char const *s);
 char	*ft_strdup(const char *s1);
 char	*ft_strsub(char const *s, unsigned int start, size_t len);
-
+void ft_strfd(int fd, char *str);
 
 /*algos*/
 int sort(t_env *point);

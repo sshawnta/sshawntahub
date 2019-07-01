@@ -1,41 +1,41 @@
 #include "push_swap.h"
 
-int main(int argc, char **argv)
+int		main(int argc, char **argv)
 {
-	t_env point;
+	t_env	point;
+	int		i;
 
 	if (argc == 1)
 		return (1);
-	check_err(&point, argc, argv);
-	create_stacks(&point, argc, argv);
+	i = check_err(&point, argc, argv);
 	sort(&point);
 	show_move(&point);
 	return (0);
 }
 
-void check_err(t_env *point, int argc, char **argv)
+int		check_err(t_env *point, int argc, char **argv)
 {
-	int i;
-	int j;
-	int k;
-	double val;
+	int		i;
+	int		j;
+	int		k;
+	double	val;
 
 	i = 0;
 	j = 0;
-
 	point->arg.name = 0;
 	point->arg.color = 0;
 	point->arg.file = 0;
-
 	while (++j <= 2 && j < argc)
 	{
-		!ft_strcmp(argv[j], "-v") && (point->arg.name = 1) ? i++: 0;
-		!ft_strcmp(argv[j], "-c") && (point->arg.color = 1) ? i++: 0;
-		!ft_strcmp(argv[j], "-f") && (point->arg.file = 1) ? i++: 0;
-
+		!ft_strcmp(argv[j], "-v") && (point->arg.name = 1) ? i++ : 0;
+		!ft_strcmp(argv[j], "-c") && (point->arg.color = 1) ? i++ : 0;
+		!ft_strcmp(argv[j], "-f") && (point->arg.file = 1) ? i++ : 0;
 	}
-	if (point->arg.file >0)
-				file_read(point, argc, argv);
+	if ((point->arg.file == 1 && point->arg.name == 1)
+		|| (point->arg.file == 1 && point->arg.color == 1) || (point->arg.file == 1 && argc > 3))
+		error(0);
+	if (point->arg.file == 1)
+		file_read(point, argc, argv, i);
 	else
 	{
 		while (++i < argc)
@@ -47,36 +47,49 @@ void check_err(t_env *point, int argc, char **argv)
 			val = ft_atof(argv[i]); // заменить на функцию из либы
 			while (++j < argc)
 				error(!(val == ft_atof(argv[j])));
-				error(!(val > MAX_INT || val < MIN_INT));
+			error(!(val > MAX_INT || val < MIN_INT));
 		}
 	}
-	
-}
-
-int file_read(t_env *point, int argc, char **argv)
-{
-	//int  i = 0;
-	point->arg.file = 0;
-	int fd;
-	char *line;
-	int res;
-	if (argc == 2)
-	{
-		fd = open(argv[1], O_RDONLY);
-		while ((res = get_next_line(fd, &line)) > -1)
-		{
-			ft_printf("%s", line);
-		}
-	}
+	if (point->arg.file == 0)
+		create_stacks(point, argc, argv);
 	else
-		error(0);
+		return (1);
 	return (0);
 }
 
-void create_stacks(t_env *point, int argc, char **argv)
+void	file_read(t_env *point, int argc, char **argv, int i)
 {
-	int i;
-	t_stack *current;
+	int		fd;
+	char	*line;
+	int		res;
+	char	**arr;
+	double	val;
+
+	arr = malloc(sizeof(char *) * 500);
+	i = 0;
+	line = malloc(sizeof(char *) * 500);
+	if (argc == 3)
+	{
+		fd = open(argv[2], O_RDONLY);
+		while ((res = get_next_line(fd, &line)) == 1)
+		{
+			error(!(!ft_isdigit(line[0]) && line[0] != '-'));
+			val = ft_atof(line);
+			error(!(val > MAX_INT || val < MIN_INT));
+			arr[i] = line;
+			i++;
+		}
+		argv = arr;
+		argc = i;
+		close(fd);
+		create_stacks(point, i, arr);
+	}
+}
+
+void	create_stacks(t_env *point, int argc, char **argv)
+{
+	int		i;
+	t_stack	*current;
 
 	point->move = NULL;
 	point->stack_b = NULL;
@@ -91,11 +104,11 @@ void create_stacks(t_env *point, int argc, char **argv)
 		if (i + 1 < argc)
 		{
 			error((int)(current->next = (t_stack*)malloc(sizeof(t_stack))));
-			current = current->next;		
+			current = current->next;
 		}
 	}
 	point->stack_end_a = current;
-} 
+}
 
 void	error(int err)
 {
@@ -107,14 +120,10 @@ void	error(int err)
 	return ;
 }
 
-
-/*
-НоВыЙ ФаЙл
- */
-
-int swap_a(t_env *point, int mv)
+/* НоВыЙ ФаЙл */
+int		swap_a(t_env *point, int mv)
 {
-	int tmp;
+	int		tmp;
 
 	if (point->stack_a != NULL && point->stack_a->next != NULL)
 	{
@@ -127,11 +136,11 @@ int swap_a(t_env *point, int mv)
 	return (0);
 }
 
-int swap_b(t_env *point, int mv)
+int		swap_b(t_env *point, int mv)
 {
-	int tmp;
+	int		tmp;
 
-		if (point->stack_b != NULL && point->stack_b->next != NULL)
+	if (point->stack_b != NULL && point->stack_b->next != NULL)
 	{
 		tmp = point->stack_b->value;
 		point->stack_b->value = point->stack_b->next->value;
@@ -139,26 +148,23 @@ int swap_b(t_env *point, int mv)
 		mv == 0 ? add_move(point, "sb") : 0;
 		return (1);
 	}
-	return (0);	
+	return (0);
 }
 
-void swap_a_and_b(t_env *point)
+void	swap_a_and_b(t_env *point)
 {
-	int opachki;
+	int		opachki;
 
 	opachki = 0;
 	opachki += swap_a(point, 1);
 	opachki += swap_b(point, 1);
 	opachki != 0 ? add_move(point, "ss") : 0;
 }
+/*NOVIY FAIL*/
 
-/*
-NOVIY FAIL
-*/
-
-int rotate_a(t_env *point, int mv)
+int		rotate_a(t_env *point, int mv)
 {
-	t_stack *tmp;
+	t_stack	*tmp;
 
 	if (point->stack_a != NULL && point->stack_a->next != NULL)
 	{
@@ -173,9 +179,9 @@ int rotate_a(t_env *point, int mv)
 	return (0);
 }
 
-int rotate_b(t_env *point, int mv)
+int		rotate_b(t_env *point, int mv)
 {
-	t_stack *tmp;
+	t_stack	*tmp;
 
 	if (point->stack_b != NULL && point->stack_b->next != NULL)
 	{
@@ -190,23 +196,21 @@ int rotate_b(t_env *point, int mv)
 	return (0);
 }
 
-void rotate_a_and_b(t_env *point)
+void	rotate_a_and_b(t_env *point)
 {
-	int opachki;
+	int		opachki;
 
 	opachki = 0;
 	opachki += rotate_a(point, 1);
 	opachki += rotate_b(point, 1);
 	opachki != 0 ? add_move(point, "rr") : 0;
 }
+/*NOVIY FAIl*/
 
-/*
-NOVIY FAIl
-*/
-int rev_rotate_a(t_env *point, int mv)
+int		rev_rotate_a(t_env *point, int mv)
 {
-	t_stack *tmp;
-	t_stack *end;
+	t_stack	*tmp;
+	t_stack	*end;
 
 	if (point->stack_a != NULL && point->stack_a->next != NULL)
 	{
@@ -218,16 +222,16 @@ int rev_rotate_a(t_env *point, int mv)
 		point->stack_end_a->next = NULL;
 		end->next = point->stack_a;
 		point->stack_a = end;
-		mv == 0 ? add_move (point, "rra") : 0;
+		mv == 0 ? add_move(point, "rra") : 0;
 		return (1);
 	}
 	return (0);
 }
 
-int rev_rotate_b(t_env *point, int mv)
+int		rev_rotate_b(t_env *point, int mv)
 {
-	t_stack *tmp;
-	t_stack *end;
+	t_stack	*tmp;
+	t_stack	*end;
 
 	if (point->stack_b != NULL && point->stack_b->next != NULL)
 	{
@@ -239,29 +243,26 @@ int rev_rotate_b(t_env *point, int mv)
 		point->stack_end_b->next = NULL;
 		end->next = point->stack_b;
 		point->stack_b = end;
-		mv == 0 ? add_move (point, "rrb") : 0;
+		mv == 0 ? add_move(point, "rrb") : 0;
 		return (1);
 	}
 	return (0);
 }
 
-void rev_rotate_a_and_b(t_env *point)
+void	rev_rotate_a_and_b(t_env *point)
 {
-	int opachki;
+	int		opachki;
 
 	opachki = 0;
 	opachki += rev_rotate_a(point, 1);
 	opachki += rev_rotate_b(point, 1);
 	opachki != 0 ? add_move(point, "rrr") : 0;
 }
+/*NOVIY FAIL*/
 
-/*
-NOVIY FAIL
-*/
-
-void push_a(t_env *point)
+void	push_a(t_env *point)
 {
-	t_stack *tmp;
+	t_stack	*tmp;
 
 	if (point->stack_b != NULL)
 	{
@@ -275,11 +276,11 @@ void push_a(t_env *point)
 	}
 }
 
-void push_b(t_env *point)
+void	push_b(t_env *point)
 {
 	t_stack *tmp;
 
-	if(point->stack_a != NULL)
+	if (point->stack_a != NULL)
 	{
 		tmp = point->stack_a;
 		point->stack_a = point->stack_a->next;
@@ -290,12 +291,9 @@ void push_b(t_env *point)
 		add_move(point, "pb");
 	}
 }
+/*NOVIY FAIL*/
 
-/*
-NOVIY FAIL
-*/
-
-void add_move(t_env *point, char *mv)
+void	add_move(t_env *point, char *mv)
 {
 	if (point->move == NULL)
 	{
@@ -315,11 +313,11 @@ void add_move(t_env *point, char *mv)
 	{
 		show_stack(point, point->stack_a, 'a');
 		show_stack(point, point->stack_b, 'b');
-		point->arg.color == 0 ? ft_printf("%s%s\n", "Use -> ", mv) : ft_printf("\e[93m%s%s\n","Use - ", mv);
+		point->arg.color == 0 ? ft_printf("%s%s\n", "Use -> ", mv) : ft_printf("\e[93m%s%s\n", "Use - ", mv);
 	}
 }
 
-void show_stack(t_env *point, t_stack *stack, char c)
+void	show_stack(t_env *point, t_stack *stack, char c)
 {
 	t_stack *st;
 
@@ -337,23 +335,50 @@ void show_stack(t_env *point, t_stack *stack, char c)
 	ft_printf(COLOR);
 }
 
-void show_move(t_env *point)
+void	show_move(t_env *point)
 {
-	t_move *st;
+	t_move	*st;
+	int		fd;
 
 	st = point->move;
-	while (st != NULL)
+	if (point->arg.file == 1)
 	{
-		point->arg.color ? color(st->name) : 0;
-		ft_printf("%s", st->name);
-		st->next != NULL ? ft_printf("\n") : 0;
-		st = st->next;
-		ft_printf(COLOR);
+		fd = open("result.txt", O_WRONLY);
+		while (st != NULL)
+		{
+			ft_strfd(fd, st->name);
+			st->next != NULL ? ft_strfd(fd, "\n") : 0;
+			st = st->next;
+		}
+		close(fd);
 	}
-	ft_printf("\n");
+	else
+	{
+		while (st != NULL)
+		{
+			point->arg.color ? color(st->name) : 0;
+			ft_printf("%s", st->name);
+			st->next != NULL ? ft_printf("\n") : 0;
+			st = st->next;
+			ft_printf(COLOR);
+		}
+		ft_printf("\n");
+	}
 }
 
-void color(char *name)
+void	ft_strfd(int fd, char *str)
+{
+	int i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		write(fd, &str[i], 1);
+		i++;
+	}
+}
+
+void	color(char *name)
 {
 	!ft_strcmp(name, "sa") ? ft_printf(COLOR_RED) : 0;
 	!ft_strcmp(name, "sb") ? ft_printf(COLOR_GREEN) : 0;
@@ -389,7 +414,7 @@ double	ft_atof(const char *str)
 	return (sign == 1 && value > 0 ? -value : value);
 }
 
-int	ft_isdigit(int c)
+int		ft_isdigit(int c)
 {
 	return ('0' <= c && c <= '9');
 }
@@ -400,9 +425,9 @@ int		ft_isblank(char c)
 			c == '\t' || c == '\r' || c == '\f'));
 }
 
-int	ft_strcmp(const char *s1, const char *s2)
+int		ft_strcmp(const char *s1, const char *s2)
 {
-	int i;
+	int		i;
 
 	i = 0;
 	while (s1[i] != '\0' && s2[i] != '\0')
@@ -455,13 +480,13 @@ char	*ft_strdup(const char *s1)
 	str[i] = '\0';
 	return (str);
 }
+/* NOVIY FAIL ALGOS */
 
-/*NOVIY FAIL ALGOS */
-int minax(t_env *point)
+int		minax(t_env *point)
 {
-	int count;
-	int count_min;
-	t_stack *stack;
+	int		count;
+	int		count_min;
+	t_stack	*stack;
 
 	point->min = MAX_INT;
 	point->max = MIN_INT;
@@ -482,7 +507,7 @@ int minax(t_env *point)
 	return (count_min > count ? 1 : -1);
 }
 
-int sort(t_env *point)
+int		sort(t_env *point)
 {
 	if (point->stack_a->next == NULL)
 		return (0);
@@ -504,11 +529,12 @@ int sort(t_env *point)
 	}
 	while (point->stack_b != NULL)
 		push_a(point);
-	return (0);	
+	return (0);
 }
-int proverka_prav(t_stack *stack, int md)
+
+int		proverka_prav(t_stack *stack, int md)
 {
-	t_stack *st;
+	t_stack		*st;
 
 	st = stack;
 	while (st->next != NULL)
