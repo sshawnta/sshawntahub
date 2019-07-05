@@ -5,82 +5,42 @@
 #                                                     +:+ +:+         +:+      #
 #    By: sshawnta <sshawnta@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/05/28 17:43:55 by sshawnta          #+#    #+#              #
-#    Updated: 2019/07/04 17:50:03 by sshawnta         ###   ########.fr        #
+#    Created: 2019/07/05 13:42:28 by sshawnta          #+#    #+#              #
+#    Updated: 2019/07/05 13:42:34 by sshawnta         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = libftprintf.a
+NAME_PS = push_swap
+NAME_CH = checker
 
-OBJS_DIR = libftprintf_objects
-CC = clang
-CFLAGS = -Wall -Wextra -Werror
-RM = /bin/rm -rf
+CC = gcc
+FLAGS = -Wall -Wextra -Werror
+INCLUDES = -I./includes/
+LIBPRINTF = $(LIBPRINTF_DIR)libftprintf.a
+LIBPRINTF_DIR = ./libprintf/
+SRCS = ./srcs/alg.c ./srcs/get_next_line.c ./srcs/helps.c ./srcs/lib.c ./srcs/lib2.c ./srcs/push_swap.c ./srcs/push.c \
+		./srcs/rev_rot.c ./srcs/rot.c ./srcs/swap.c ./srcs/util2.c
+CHECKER_C = ./srcs/checker.c
+PUSH_SWAP_C = ./srcs/mainpush.c
 
-LIBFT_PATH = libft/
-LIBFT_INCS =	libft.h\
-				libft_typedefs.h
-LIBFT_SRCS = 	ft_atoibase.c\
-				ft_itoabase.c\
-				ft_memalloc.c\
-				ft_memcmp.c\
-				ft_memdel.c\
-				ft_memmove.c\
-				ft_memset.c\
-				ft_nbr_len.c\
-				ft_strchr.c\
-				ft_strdel.c\
-				ft_strin.c\
-				ft_strjoin.c\
-				ft_strlen.c\
-				ft_strncpy.c\
-				ft_strndup.c\
-				ft_strncmp.c\
-				ft_strnew.c\
-				ft_strninject.c\
-				ft_strrchr.c
-LIBFT_OBJS = $(LIBFT_SRCS:%.c=$(LIBFT_OBJS_DIR)/%.o)
-LIBFT_OBJS_DIR = $(OBJS_DIR)
+all: $(NAME_PS) $(NAME_CH)
 
-PRINTF_PATH = ft_printf/
-PRINTF_INCS =	ft_printf.h\
-				ft_printf_typedefs.h
-PRINTF_SRCS =	ft_printf.c\
-				ft_printf_cspf.c\
-				ft_printf_diouxx.c\
-				ft_printf_fill_funs.c\
-				ft_printf_flags.c\
-				ft_printf_parse.c\
-				ft_printf_prec.c\
-				ft_printf_width.c\
-				ft_printf_mod.c\
-				ft_printf_base.c\
-				ft_printf_lhllhhl.c\
-				ft_printf_zjt.c\
-				ft_printf_r.c\
-				ft_printf_unicode.c\
-				ft_printf_parce_funs.c\
-				ft_printf_color.c
-PRINTF_OBJS = $(PRINTF_SRCS:%.c=$(PRINTF_OBJS_DIR)/%.o)
-PRINTF_OBJS_DIR = $(OBJS_DIR)
+$(NAME_PS): $(LIBPRINTF)
+	$(CC) $(FLAGS) $(LIBPRINTF) $(INCLUDES) $(SRCS) $(PUSH_SWAP_C) -o $(NAME_PS)
 
-all: $(NAME)
+$(NAME_CH): $(LIBPRINTF)
+	$(CC) $(FLAGS) $(LIBPRINTF) $(INCLUDES) $(SRCS) $(CHECKER_C) -o $(NAME_CH)
 
-$(NAME): $(LIBFT_OBJS) $(PRINTF_OBJS)
-	@ar rc $(NAME) $^
-	@ranlib $(NAME)
+$(LIBPRINTF):
+	$(MAKE) -C $(LIBPRINTF_DIR)
 
-$(LIBFT_OBJS_DIR)/%.o: $(LIBFT_PATH)%.c
-	@mkdir -p $(LIBFT_OBJS_DIR)
-	@$(CC) $(CFLAGS) -c $< $(addprefix -I.,$(addprefix $(LIBFT_PATH),$(LIBFT_INCS))) -o $@
-
-$(PRINTF_OBJS_DIR)/%.o: $(PRINTF_PATH)%.c
-	@mkdir -p $(LIBFT_OBJS_DIR)
-	@$(CC) $(CFLAGS) -c $< $(addprefix -I.,$(addprefix $(PRINTF_PATH),$(PRINTF_INCS))) -o $@
 clean:
-	@$(RM) $(OBJS_DIR)
+	$(MAKE) clean -C $(LIBPRINTF_DIR)
 
-fclean: clean
-	@$(RM) $(NAME)
-	
-re: fclean all
+fclean:
+	$(MAKE) fclean -C $(LIBPRINTF_DIR)
+	/bin/rm -rf $(NAME_PS) $(NAME_CH)
+
+re:
+	$(MAKE) fclean
+	$(MAKE) all
