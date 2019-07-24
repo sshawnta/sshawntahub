@@ -5,110 +5,178 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sshawnta <sshawnta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/07/02 17:17:58 by sshawnta          #+#    #+#             */
-/*   Updated: 2019/07/05 14:19:19 by sshawnta         ###   ########.fr       */
+/*   Created: 2019/07/24 18:50:19 by sshawnta          #+#    #+#             */
+/*   Updated: 2019/07/24 19:25:29 by sshawnta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
+#ifndef __PUSH_SWAP_H
+# define __PUSH_SWAP_H
 
-# include <stdlib.h>
-# include <unistd.h>
 # include <fcntl.h>
-# include <string.h>
-# include "../libprintf/ft_printf/ft_printf.h"
+# include <stdlib.h>
+# include "libft.h"
 
-# define ABS(x) (x < 0 ? -(x) : x)
-# define MAX_INT 2147483647
-# define MIN_INT -2147483648
-# define COLOR_YELLOW "\e[93m"
-# define COLOR_CYAN "\e[36m"
-# define COLOR_GREY "\e[90m"
-# define COLOR_BLUE "\e[34m"
-# define COLOR_MAJ "\e[35m"
-# define COLOR_ORANGE "\e[33m"
-# define COLOR_RED "\e[31m"
-# define COLOR_GREEN "\e[32m"
-# define COLOR "\e[0m"
-# define BUFF_SIZE 32
-# define MAX_FD 1024 + 1
+# define FALSE 0
+# define TRUE 1
 
-typedef struct		s_stack
+# define PUSH 0
+# define CHECK 1
+
+# define FT_MAX(X, Y) ((X) > (Y) ? (X) : (Y))
+
+# define ERR_FILENAME "program terminated, error: could not find the file"
+# define ERR_FILEREAD "program terminated, error: could not read the file"
+# define ERR_MEMALLOC "program terminated, error: could not allocate memory"
+# define ERR_NAN "program terminated, error: invalid values"
+# define ERR_DUP "program terminated, error: duplicate values"
+# define ERR_NO_NUMBERS "program terminated, error: not enough values"
+# define ERR_WRONG_MV "program terminated, error: unknown or invalid command"
+# define ERR_WR_FLAG "program terminated, error: unknown or invalid option(s)"
+
+# define A_FIRST cont->a_start
+
+# define A_SECOND cont->a_start->next
+
+# define B_FIRST cont->b_start
+
+# define B_SECOND cont->b_start->next
+
+typedef struct		s_node
 {
 	int				value;
-	struct s_stack	*next;
-}					t_stack;
+	int				index;
+	short			keep;
+	struct s_node	*prev;
+	struct s_node	*next;
+}					t_node;
 
-typedef struct		s_move
+typedef struct		s_opt
 {
-	char			*name;
-	struct s_move	*next;
-}					t_move;
+	short			f;
+	short			c;
+	short			t;
+	short			v;
+}					t_opt;
 
-typedef struct		s_arg
+typedef struct		s_cont
 {
-	short			name;
-	short			color;
-	short			file;
-}					t_arg;
+	int				index;
+	t_opt			opt;
+	int				a_size;
+	int				b_size;
+	int				total;
+	t_node			*a_start;
+	t_node			*b_start;
+	t_node			*a_end;
+	int				fd;
+	short			program;
+	int				pairs;
+	t_node			*index_start;
+}					t_cont;
 
-typedef struct		s_env
+typedef struct		s_shift
 {
-	t_stack			*stack_a;
-	t_stack			*stack_b;
-	t_stack			*stack_end_a;
-	t_stack			*stack_end_b;
-	t_move			*move;
-	t_move			*move_end;
-	t_arg			arg;
-	int				count_min;
-	int				count;
-	int				min;
-	int				max;
-	int				m;
-}					t_env;
+	t_node			*a_node;
+	t_node			*b_node;
+	int				a_direction;
+	int				b_direction;
+	int				size;
+	short			set;
+}					t_shift;
 
-int					check_err(t_env *point, int argc, char **argv);
-void				create_stacks(t_env *point, int argc, char **argv);
-void				error(int err);
-void				da_da(t_env *point);
-void				op_op (int i, int argc, int k, char **argv, \
-					t_env *point, double val);
-t_move				*inache(t_env *point, t_move *st);
-void				asdad(int i, int j, int argc, char **argv);
-void				close_free(int fd, char **arr, char *tmp);
-void				file_read(t_env *point, int argc, char **argv, int i);
-int					get_next_line(const int fd, char **line);
-int					ft_new_line(char **s, char **line, int fd, int ret);
-int					swap_a(t_env *point, int mv);
-int					swap_b(t_env *point, int mv);
-void				swap_a_and_b(t_env *point);
-int					rotate_a(t_env *point, int mv);
-int					rotate_b(t_env *point, int mv);
-void				rotate_a_and_b(t_env *point);
-int					rev_rotate_a(t_env *point, int mv);
-int					rev_rotate_b(t_env *point, int mv);
-void				rev_rotate_a_and_b(t_env *point);
-void				push_a(t_env *point);
-void				push_b(t_env *point);
-void				add_move(t_env *point, char *mv);
-void				show_stack(t_env *point, t_stack *stack, char c);
-void				show_move(t_env *point);
-void				color(char *name);
-double				ft_atof(const char *str);
-int					ft_isdigit(int c);
-int					ft_isblank(char c);
-int					ft_strcmp(const char *s1, const char *s2);
-void				ft_putstr(char const *s);
-char				*ft_strdup(const char *s1);
-char				*ft_strsub(char const *s, unsigned int start, size_t len);
-void				ft_strfd(int fd, char *str);
-int					ft_atoi(const char *str);
-int					sort(t_env *point);
-int					minax(t_env *point);
-int					proverka_prav(t_stack *stack, int md);
-int					read_rule(t_env *point);
-int					check(t_env *point);
-void				free_point(t_env *point);
+typedef enum
+{
+	R,
+	RR
+}	t_direction;
+
+/*
+** add.c
+*/
+
+void				add(t_node **head, t_node **tail, int value);
+
+/*
+** parser.c
+*/
+
+t_cont				*parser(int argc, char **argv, short program);
+
+/*
+** push.c
+*/
+
+void				pa(t_cont *cont);
+void				pb(t_cont *cont);
+
+/*
+** reverse_rotate.c
+*/
+
+void				rra(t_cont *cont, short rrr);
+void				rrb(t_cont *cont, short rrr);
+void				rrr(t_cont *cont);
+
+/*
+** rotate.c
+*/
+
+void				ra(t_cont *cont, short rr);
+void				rb(t_cont *cont, short rr);
+void				rr(t_cont *cont);
+
+/*
+** swap.c
+*/
+
+void				sa(t_cont *cont, t_node *first, t_node *second, short ss);
+void				sb(t_cont *cont, t_node *first, t_node *second, short ss);
+void				ss(t_cont *c);
+
+/*
+** terminate.c
+*/
+
+void				terminate(const char *str);
+
+/*
+** visualizer.c
+*/
+
+void				visualiser(t_cont *cont);
+
+/*
+** sort.c
+*/
+
+void				sort(t_cont *cont);
+
+/*
+** index.c
+*/
+
+void				get_index(t_cont *cont);
+
+/*
+** align.c
+*/
+
+void				move_b(t_cont *cont, t_shift *shift);
+void				align_a(t_cont *cont);
+
+/*
+** order.c
+*/
+
+int					is_ordered(t_cont *cont);
+int					check_index(t_cont *cont, t_node *ind_start);
+void				order_stack(t_cont *cont);
+
+/*
+** shift.c
+*/
+
+void				opt_direction(t_cont *cont, t_shift *shift);
+
 #endif
